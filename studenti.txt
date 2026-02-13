@@ -1,0 +1,10 @@
+studenti
+Petr;Novák;85
+Jana;Dvořáková;92
+Karel;Svoboda;střelec
+Lukáš;Veselý;45
+Eva;Krejčí;100
+;
+Martin;Hrubý;76
+ŠpatnýFormátŘádku
+Adéla;Rychlá;60
