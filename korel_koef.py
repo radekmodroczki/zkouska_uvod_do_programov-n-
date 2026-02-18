@@ -1,44 +1,36 @@
 import math
 
 class StatisticsCalculator:
-    """
-    Třída pro statistické výpočty nad dvojicí datových sad.
-    """
+# Class for statistical calculations on a pair of data sets.        
     def __init__(self):
         self.data_x = []
         self.data_y = []
 
     def load_data(self, list_x, list_y):
-        """
-        Načte a validuje vstupní data.
-        Ošetřuje singulární případ: Různé délky polí.
-        """
+# Reads and validates input data. Handles singular cases, where the lines are different lenghts
         if len(list_x) != len(list_y):
-            raise ValueError("Chyba: Vstupní posloupnosti musí mít stejnou délku.")
+            raise ValueError("Error: Input sequences must be the same length")
         if len(list_x) < 2:
-            raise ValueError("Chyba: Pro výpočet korelace jsou potřeba alespoň 2 hodnoty.")
+            raise ValueError("Error: At least 2 values are needed to calculate correlation.")
         
         self.data_x = list_x
         self.data_y = list_y
 
     def _calculate_mean(self, data):
-        """Pomocná metoda pro výpočet aritmetického průměru."""
+ # Method to calculate means.
         if not data:
             return 0.0
         return sum(data) / len(data)
 
     def calculate_pearson_correlation(self):
-        """
-        Vypočte Pearsonův korelační koeficient r.
-        Vrací hodnotu v intervalu <-1, 1>.
-        """
+# Calculates the pearson correlation coefficient.
         n = len(self.data_x)
         mean_x = self._calculate_mean(self.data_x)
         mean_y = self._calculate_mean(self.data_y)
 
-        numerator = 0.0      # Čitatel
-        denom_x_sq = 0.0     # Část jmenovatele pro X
-        denom_y_sq = 0.0     # Část jmenovatele pro Y
+        numerator = 0.0      
+        denom_x_sq = 0.0     
+        denom_y_sq = 0.0     
 
         for i in range(n):
             diff_x = self.data_x[i] - mean_x
@@ -48,39 +40,39 @@ class StatisticsCalculator:
             denom_x_sq += diff_x ** 2
             denom_y_sq += diff_y ** 2
 
-        # Výpočet jmenovatele
+        # Denominator calculation
         denominator = math.sqrt(denom_x_sq * denom_y_sq)
 
-        # Ošetření singulárního případu: Dělení nulou
-        # Nastane, pokud jsou všechna čísla v jedné sadě stejná (rozptyl je 0).
+        # Singular case: division by zero
         if denominator == 0:
-            raise ArithmeticError("Nelze vypočítat korelaci: Jedna z posloupností má nulový rozptyl (všechna čísla jsou stejná).")
+            raise ArithmeticError("Cannot calculate correlation, of of the sequence has zero variance (all numbers are the same).")
 
         return numerator / denominator
 
-# --- Hlavní program (Main) ---
+# Main program
 if __name__ == "__main__":
     try:
-        # Příklad vstupních dat (např. čas studia vs. známka)
-        studium_hodiny = [10, 5, 2, 8, 7] 
-        znamky_body =    [90, 60, 40, 85, 80]
+        # Entry data example
+        study_hours = [10, 5, 2, 8, 7] 
+        grade_points = [90, 60, 40, 85, 80]
 
         calc = StatisticsCalculator()
-        calc.load_data(studium_hodiny, znamky_body)
+        calc.load_data(study_hours, grade_points)
         
         result = calc.calculate_pearson_correlation()
         
-        print(f"Vstup X: {studium_hodiny}")
-        print(f"Vstup Y: {znamky_body}")
-        print(f"Pearsonův koeficient: {result:.4f}")
+        print(f"Entry X: {studium_hodiny}")
+        print(f"Entry Y: {znamky_body}")
+        print(f"Pearson correlation coefficient: {result:.4f}")
         
         # Interpretace výsledku
         if result > 0.7:
-            print("Závěr: Silná přímá závislost.")
+            print("REsult: Strong direct dependence")
         elif result < -0.7:
-            print("Závěr: Silná nepřímá závislost.")
+            print("Result: Strong indirect dependence.")
         else:
-            print("Závěr: Nízká nebo žádná lineární závislost.")
+            print("Result: no correlaction.")
 
     except (ValueError, ArithmeticError) as e:
-        print(f"Nastala chyba při zpracování: {e}")
+
+        print(f"An error occured: {e}")
